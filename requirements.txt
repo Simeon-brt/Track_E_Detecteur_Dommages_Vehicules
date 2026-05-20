@@ -3,6 +3,6 @@ torchvision
 transformers
 Pillow
 numpy
-grad-cam
+pytorch-grad-cam
 streamlit
 opencv-python-headless
