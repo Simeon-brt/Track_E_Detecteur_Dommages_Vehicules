@@ -1,0 +1,9 @@
+torch
+torchvision
+transformers
+Pillow
+numpy
+grad-cam
+streamlit
+opencv-python-headless
+
