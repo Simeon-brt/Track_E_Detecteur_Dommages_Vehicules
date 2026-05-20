@@ -1,8 +1,8 @@
+opencv-python-headless
 torch
 torchvision
 transformers
 Pillow
 numpy
-grad-cam --no-deps
-opencv-python-headless
+grad-cam
 streamlit
