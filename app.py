@@ -41,9 +41,25 @@ def predict(model, device, img_tensor):
     pred_idx = int(np.argmax(probs))
     return pred_idx, probs
 
+# On crée une mini-classe adaptatrice pour Hugging Face
+class HuggingFaceModelWrapper(torch.nn.Module):
+    def __init__(self, model):
+        super().__init__()
+        self.model = model
+
+    def forward(self, x):
+        return self.model(pixel_values=x).logits  # On extrait spécifiquement les logits
+
 def generate_gradcam(model, device, img_tensor):
+    # 1. On applique le wrapper au modèle original
+    wrapped_model = HuggingFaceModelWrapper(model)
+    
+    # 2. On cible la couche (elle reste identique sur ton modèle chargé)
     target_layer = [model.mobilenet_v2.conv_stem]
-    cam = GradCAM(model=model, target_layers=target_layer)
+    
+    # 3. On passe le modèle enveloppé à GradCAM
+    cam = GradCAM(model=wrapped_model, target_layers=target_layer)
+    
     inp = img_tensor.unsqueeze(0).to(device)
     grayscale = cam(input_tensor=inp, targets=None)
     return grayscale[0]
